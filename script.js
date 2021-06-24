@@ -9,10 +9,6 @@ let passwordBuilder = {
   u: [], //Tracks indexes of character type
   n: [], //Tracks indexes of character type
   s: [], //Tracks indexes of character type
-  checkCriteriaMet: function(){
-    //Checks if the password has met current criteria
-    return true;
-  },
   resetBuilder: function(){
     this.password = "";
     this.length = 0;
@@ -44,6 +40,42 @@ let characterGenerator = {
   },
 };
 
+function swapCharacters(){
+  //Identify which categories have 0 length
+  //replace character types with another category of zero length
+  let missTypes = [];
+  let typesToReplace = [];
+  for(const type in passwordBuilder.criteria){
+    if(passwordBuilder[type].length <= 0){
+      missTypes.push(type);
+    } else if (passwordBuilder[type].length > 1){
+      typesToReplace.push(type);
+    }
+  }
+
+  while(missTypes.length > 0){
+    //Get first missing type
+    let currType = missTypes.pop();
+    //Select a random type
+    let randType = Math.floor(Math.random() * typesToReplace.length);
+    //Get a random index from that type
+    //replace it with a random character
+    //remove randType from character list if it's length is less than 2
+  }
+
+}
+
+function checkCriteriaMet(){
+  let metCriteria = true;
+  for(const type of passwordBuilder.criteria){
+    if(passwordBuilder[type].length <= 0){
+      metCriteria = false;
+      break;
+    }
+  }
+  return metCriteria;
+}
+
 function getCharacter(charType){
     switch (charType) {
       case "l":
@@ -71,7 +103,7 @@ function constructPassword(numChar) {
   }
 
   //Check if criteria is met
-  if(passwordBuilder.checkCriteriaMet() == false){
+  if(checkCriteriaMet() == false){
     //Adjust password
   }
   console.log(passwordBuilder);
