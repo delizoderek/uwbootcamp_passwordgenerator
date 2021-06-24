@@ -12,6 +12,15 @@ let passwordBuilder = {
   checkCriteriaMet: function(){
     //Checks if the password has met current criteria
     return true;
+  },
+  resetBuilder: function(){
+    this.password = "";
+    this.length = 0;
+    this.criteria = [];
+    this.l = [];
+    this.u = [];
+    this.n = [];
+    this.s = [];
   }
 };
 
@@ -83,6 +92,7 @@ function generatePassword() {
   while (!lenthInRange) {
     passLen = prompt("How long do you want your password to be?");
     if (passLen >= 8 && passLen <= 128) {
+      passwordBuilder.length = passLen;
       lenthInRange = true;
     } else {
       alert(
@@ -128,6 +138,7 @@ function generatePassword() {
 }
 // Write password to the #password input
 function writePassword() {
+  passwordBuilder.resetBuilder();
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
