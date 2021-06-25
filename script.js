@@ -45,7 +45,8 @@ function swapCharacters(){
   //replace character types with another category of zero length
   let missTypes = [];
   let typesToReplace = [];
-  for(const type in passwordBuilder.criteria){
+  let newPass = passwordBuilder.password;
+  for(const type of passwordBuilder.criteria){
     if(passwordBuilder[type].length <= 0){
       missTypes.push(type);
     } else if (passwordBuilder[type].length > 1){
@@ -58,11 +59,24 @@ function swapCharacters(){
     let currType = missTypes.pop();
     //Select a random type
     let randType = Math.floor(Math.random() * typesToReplace.length);
-    //Get a random index from that type
+    //Get character index list
+    let charIdxList = passwordBuilder[typesToReplace[randType]];
+    //Get a random index from the array of indexes of that character type
+    let idxFromIndexList = Math.floor(Math.random() * charIdxList.length);
+    //Grab a random index from the list
+    let randIdx = charIdxList[idxFromIndexList];
+    let newChar = getCharacter(currType);
+    console.log(`replacing ${newPass[randIdx]} with ${newChar}`);
     //replace it with a random character
+    newPass = newPass.replace(newPass[randIdx],newChar);
+    passwordBuilder[currType].push(randIdx);
+    charIdxList.splice(idxFromIndexList,1);
     //remove randType from character list if it's length is less than 2
+    if(charIdxList.length < 2){
+      typesToReplace.splice(randType,1);
+    }
   }
-
+  passwordBuilder.password = newPass;
 }
 
 function checkCriteriaMet(){
@@ -104,9 +118,8 @@ function constructPassword(numChar) {
 
   //Check if criteria is met
   if(checkCriteriaMet() == false){
-    //Adjust password
+    swapCharacters();
   }
-  console.log(passwordBuilder);
   return passwordBuilder.password;
 }
 
@@ -171,7 +184,7 @@ function generatePassword() {
 // Write password to the #password input
 function writePassword() {
   passwordBuilder.resetBuilder();
-  var password = generatePassword();
+  var password = testSwap() //generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
@@ -179,3 +192,58 @@ function writePassword() {
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
+
+function bypassDialogBoxes(){
+  passwordBuilder.criteria = ['l','u','n','s'];
+  passwordBuilder.length = 8;
+  return constructPassword(8);
+}
+
+function testSwap(){
+  let size = 128;
+  passwordBuilder.length = size;
+  passwordBuilder.criteria = ['l'];
+  let missingOneType = constructPassword(size);
+  passwordBuilder.criteria = ['l','u','n','s'];
+  console.log(passwordBuilder.password);
+  swapCharacters();
+  console.log(passwordBuilder.password);
+
+  if(checkCriteriaMet()){
+    console.log("PASSING"); 
+  } else {
+    console.log("FAILED");
+  }
+
+  passwordBuilder.resetBuilder();
+
+  passwordBuilder.criteria = ['u','n'];
+  let missingTwoTypes = constructPassword(size);
+  passwordBuilder.criteria = ['l','u','n','s'];
+  console.log(passwordBuilder.password);
+  swapCharacters();
+  console.log(passwordBuilder.password);
+
+  if(checkCriteriaMet()){
+    console.log("PASSING"); 
+  } else {
+    console.log("FAILED");
+  }
+
+  passwordBuilder.resetBuilder();
+
+  passwordBuilder.criteria = ['l','s','n'];
+  let missingThreeTypes = constructPassword(size);
+  passwordBuilder.criteria = ['l','u','n','s'];
+  console.log(passwordBuilder.password);
+  swapCharacters();
+  console.log(passwordBuilder.password);
+
+  if(checkCriteriaMet()){
+    console.log("PASSING"); 
+  } else {
+    console.log("FAILED");
+  }
+
+  return "MAAAGGGIICCC";
+}
