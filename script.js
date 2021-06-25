@@ -169,6 +169,7 @@ function generatePassword() {
       charTypes.push("s");
     }
 
+    // Handles the case when the user doesn't select any character types
     if (charTypes.length >= 1) {
       passwordBuilder.criteria = charTypes;
       minCharTypes = charTypes.length;
@@ -184,7 +185,7 @@ function generatePassword() {
 // Write password to the #password input
 function writePassword() {
   passwordBuilder.resetBuilder();
-  var password = testSwap() //generatePassword();
+  var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
@@ -192,58 +193,3 @@ function writePassword() {
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
-
-function bypassDialogBoxes(){
-  passwordBuilder.criteria = ['l','u','n','s'];
-  passwordBuilder.length = 8;
-  return constructPassword(8);
-}
-
-function testSwap(){
-  let size = 128;
-  passwordBuilder.length = size;
-  passwordBuilder.criteria = ['l'];
-  let missingOneType = constructPassword(size);
-  passwordBuilder.criteria = ['l','u','n','s'];
-  console.log(passwordBuilder.password);
-  swapCharacters();
-  console.log(passwordBuilder.password);
-
-  if(checkCriteriaMet()){
-    console.log("PASSING"); 
-  } else {
-    console.log("FAILED");
-  }
-
-  passwordBuilder.resetBuilder();
-
-  passwordBuilder.criteria = ['u','n'];
-  let missingTwoTypes = constructPassword(size);
-  passwordBuilder.criteria = ['l','u','n','s'];
-  console.log(passwordBuilder.password);
-  swapCharacters();
-  console.log(passwordBuilder.password);
-
-  if(checkCriteriaMet()){
-    console.log("PASSING"); 
-  } else {
-    console.log("FAILED");
-  }
-
-  passwordBuilder.resetBuilder();
-
-  passwordBuilder.criteria = ['l','s','n'];
-  let missingThreeTypes = constructPassword(size);
-  passwordBuilder.criteria = ['l','u','n','s'];
-  console.log(passwordBuilder.password);
-  swapCharacters();
-  console.log(passwordBuilder.password);
-
-  if(checkCriteriaMet()){
-    console.log("PASSING"); 
-  } else {
-    console.log("FAILED");
-  }
-
-  return "MAAAGGGIICCC";
-}
