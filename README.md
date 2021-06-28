@@ -1,5 +1,5 @@
 # uwbootcamp_passwordgenerator
-The goal os this project is to build a dynamic password generator. It should be able to output passwords of different lengths and a mix of numbers, special characters, upper case letters and lowercase letters. The full assignment is defined [here](./assets/AssignmentDetails.md)
+The goal os this project is to build a dynamic password generator. It should be able to output passwords of different lengths and a mix of numbers, special characters, upper case letters and lowercase letters. The full assignment is defined [here](./Assets/AssignmentDetails.md)
 
 ## Resources
 - [Arrays - Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
